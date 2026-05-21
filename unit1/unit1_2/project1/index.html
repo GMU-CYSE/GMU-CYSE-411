@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JavaScript Security Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+    }
+    input, button {
+      margin-top: 10px;
+      padding: 5px;
+    }
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Login Demo (Client-Side Only)</h2>
+
+  <p>Enter user data as JSON:</p>
+
+  <input id="userInput" size="40"
+         value='{"role": "user"}' />
+
+  <br>
+
+<input id="aInput" size="40"
+         value='{"role": "test"}' />
+
+  <br>
+
+
+  <button onclick="checkAccess()">Check Access</button>
+
+  <div id="result"></div>
+
+  <script>
+    function checkAccess() {
+      const input = document.getElementById("userInput").value;
+      const result = document.getElementById("result");
+
+      try {
+        const user = JSON.parse(input);
+
+        if (!user.role) {
+          throw new Error("Missing role field");
+        }
+
+        if (user.role === "admin") {
+          result.textContent = "ACCESS GRANTED (admin)";
+          result.style.color = "green";
+        } else {
+          result.textContent = "ACCESS DENIED (not admin)";
+          result.style.color = "red";
+        }
+
+      } catch (error) {
+        console.error("Error:", error.message);
+        result.textContent = "Invalid input – access denied";
+        result.style.color = "red";
+      }
+    }
+  </script>
+
+</body>
+</html>
