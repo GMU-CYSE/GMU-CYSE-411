@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DOM Manipulation Demo</title>
+</head>
+<body>
+
+  <h2 id="status">ACCESS DENIED</h2>
+
+  <button onclick="checkAccess()">Check Access</button>
+
+  <script>
+    function checkAccess() {
+      document.getElementById("status").textContent = "ACCESS DENIED";
+    }
+  </script>
+
+</body>
+</html>

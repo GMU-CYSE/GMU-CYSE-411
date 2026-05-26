@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Browser Storage vs Cookies Demo</title>
+  <meta charset="utf-8">
+</head>
+<body>
+
+  <h2 id="status">UNDEFINED</h2>
+
+  <button id="checkBtn">Check Access</button>
+  <button id="resetBtn">Reset State</button>
+
+  <h3>State Source</h3>
+  <label>
+    <input type="radio" name="source" value="variable" checked>
+    Runtime Variable
+  </label><br>
+
+  <label>
+    <input type="radio" name="source" value="localStorage">
+    localStorage
+  </label><br>
+
+  <label>
+    <input type="radio" name="source" value="sessionStorage">
+    sessionStorage
+  </label><br>
+
+  <label>
+    <input type="radio" name="source" value="cookie">
+    Cookie
+  </label>
+
+  <p><b>Debug View:</b></p>
+  <pre id="debug"></pre>
+
+  <script src="app_ex7.js"></script>
+</body>
+</html>
