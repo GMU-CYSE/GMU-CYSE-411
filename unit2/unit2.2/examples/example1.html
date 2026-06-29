@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>innerHTML + SQL Injection Analogy</title>
+</head>
+<body>
+  <h1>User Lookup</h1>
+
+  <label>
+    Username:
+    <input id="username" placeholder="alice" />
+  </label>
+
+  <br /><br />
+  <button id="buildQuery">Build SQL Query</button>
+
+  <h2>Generated SQL</h2>
+  <pre id="sqlOutput"></pre>
+
+  <script>
+    const input = document.getElementById("username");
+    const output = document.getElementById("sqlOutput");
+    const button = document.getElementById("buildQuery");
+
+    button.addEventListener("click", () => {
+      const user = input.value; // user-controlled input
+
+      // ❌ VULNERABLE:
+      // innerHTML parses input as markup, not plain text
+      output.innerHTML =
+        "SELECT * FROM users WHERE username = '" + user + "'";
+    });
+  </script>
+</body>
+</html>
