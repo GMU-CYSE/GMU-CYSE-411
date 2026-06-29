@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CSP Demo</title>
+</head>
+<body>
+
+    <h1>Search</h1>
+
+    <input type="text" id="msgInput" placeholder="Enter message..." size="50" />
+    <button onclick="handleSubmit()">Submit</button>
+
+    <p id="output"></p>
+
+    <script src="app.js"></script>
+
+    <!-- BLOCKED by CSP: no inline scripts allowed -->
+    <script>alert('this inline script is blocked by CSP')</script>
+
+</body>
+</html>

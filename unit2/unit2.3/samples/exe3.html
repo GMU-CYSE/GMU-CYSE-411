@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Chat</title>
+</head>
+<body>
+
+    <h1>Simple Chat</h1>
+
+    <input type="text" id="msgInput" placeholder="Type a message..." size="50" />
+    <button onclick="sendMessage()">Send</button>
+    <button onclick="clearMessages()">Clear</button>
+
+    <hr>
+    <div id="chat"></div>
+
+    <script>
+        function renderMessages() {
+            const messages = JSON.parse(localStorage.getItem("messages") || "[]");
+            let html = "";
+            messages.forEach(function(msg) {
+                // VULNERABLE: stored user input injected directly into innerHTML
+                html += "<p>" + msg + "</p>";
+            });
+            document.getElementById("chat").innerHTML = html;
+        }
+
+        function sendMessage() {
+            const input = document.getElementById("msgInput").value;
+            const messages = JSON.parse(localStorage.getItem("messages") || "[]");
+            messages.push(input);
+            localStorage.setItem("messages", JSON.stringify(messages));
+            document.getElementById("msgInput").value = "";
+            renderMessages();
+        }
+
+        function clearMessages() {
+            localStorage.removeItem("messages");
+            document.getElementById("chat").innerHTML = "";
+        }
+
+        renderMessages();
+    </script>
+
+</body>
+</html>

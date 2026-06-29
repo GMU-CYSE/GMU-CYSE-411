@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>XSS Test</title>
+</head>
+<body>
+
+    <script>
+        // localStorage works on file:// unlike document.cookie
+        localStorage.setItem("sessionID", "abc123fake");
+    </script>
+
+    <h1>Welcome</h1>
+
+    <input type="text" id="msgInput" placeholder="Enter message..." size="50" />
+    <button onclick="submit()">Submit</button>
+
+    <p id="output"></p>
+
+    <script>
+        function submit() {
+            const input = document.getElementById("msgInput").value;
+            // VULNERABLE: Direct innerHTML
+            document.getElementById("output").innerHTML = input;
+        }
+    </script>
+
+</body>
+</html>
