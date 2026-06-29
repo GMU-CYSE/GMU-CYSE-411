@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lab – SQL Injection: Authentication Bypass</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #0f1117;
+            color: #e2e8f0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            gap: 32px;
+        }
+
+        header {
+            text-align: center;
+        }
+        header h1 { font-size: 1.5rem; color: #f97316; letter-spacing: .5px; }
+        header p  { margin-top: 6px; font-size: .9rem; color: #94a3b8; }
+
+        .card {
+            background: #1e2130;
+            border: 1px solid #2d3348;
+            border-radius: 10px;
+            padding: 28px 32px;
+            width: 100%;
+            max-width: 520px;
+        }
+        .card h2 { font-size: 1rem; color: #94a3b8; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+
+        label { display: block; font-size: .85rem; color: #94a3b8; margin-bottom: 6px; }
+        input {
+            width: 100%;
+            padding: 10px 12px;
+            background: #0f1117;
+            border: 1px solid #2d3348;
+            border-radius: 6px;
+            color: #e2e8f0;
+            font-size: .95rem;
+            margin-bottom: 16px;
+        }
+        input:focus { outline: none; border-color: #f97316; }
+
+        button {
+            width: 100%;
+            padding: 11px;
+            background: #f97316;
+            color: #0f1117;
+            font-weight: 700;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: .95rem;
+            letter-spacing: .3px;
+        }
+        button:hover { background: #fb923c; }
+
+        /* Result panel */
+        #result { display: none; width: 100%; max-width: 520px; flex-direction: column; gap: 12px; }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: .85rem;
+        }
+        .badge.granted { background: #14532d; color: #86efac; border: 1px solid #166534; }
+        .badge.denied  { background: #450a0a; color: #fca5a5; border: 1px solid #7f1d1d; }
+        .badge.error   { background: #1c1917; color: #fbbf24; border: 1px solid #78350f; }
+
+        .result-row { display: flex; flex-direction: column; gap: 4px; }
+        .result-row span { font-size: .78rem; color: #64748b; text-transform: uppercase; letter-spacing: .8px; }
+        .result-row code {
+            background: #0f1117;
+            border: 1px solid #2d3348;
+            border-radius: 6px;
+            padding: 10px 14px;
+            font-size: .88rem;
+            color: #fbbf24;
+            word-break: break-all;
+            white-space: pre-wrap;
+        }
+
+        .hint {
+            font-size: .82rem;
+            color: #475569;
+            border-top: 1px solid #2d3348;
+            padding-top: 16px;
+        }
+        .hint strong { color: #94a3b8; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>SQL Injection Lab — Authentication Bypass</h1>
+    <p>This login form runs real SQL against an in-memory SQLite database.</p>
+</header>
+
+<div class="card">
+    <h2>Login</h2>
+    <form id="loginForm">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" autocomplete="off">
+
+        <label for="password">Password</label>
+        <input type="text" id="password" name="password" autocomplete="off">
+
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<div id="result">
+    <div class="card" style="display:flex; flex-direction:column; gap:16px;">
+        <div id="statusBadge"></div>
+
+        <div class="result-row">
+            <span>Query executed</span>
+            <code id="queryDisplay"></code>
+        </div>
+
+        <div class="result-row" id="userRow" style="display:none">
+            <span>Row returned</span>
+            <code id="userDisplay"></code>
+        </div>
+
+        <div class="result-row" id="errorRow" style="display:none">
+            <span>Database error</span>
+            <code id="errorDisplay"></code>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const body = new URLSearchParams({
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value,
+    });
+
+    const res  = await fetch('/login', { method: 'POST', body });
+    const data = await res.json();
+
+    // Status badge
+    const badge = document.getElementById('statusBadge');
+    if (data.error) {
+        badge.innerHTML = '<span class="badge error">Database Error</span>';
+    } else if (data.success) {
+        badge.innerHTML = '<span class="badge granted">Access Granted</span>';
+    } else {
+        badge.innerHTML = '<span class="badge denied">Access Denied</span>';
+    }
+
+    // Query
+    document.getElementById('queryDisplay').textContent = data.query;
+
+    // User row
+    const userRow = document.getElementById('userRow');
+    if (data.user) {
+        document.getElementById('userDisplay').textContent = JSON.stringify(data.user, null, 2);
+        userRow.style.display = 'flex';
+    } else {
+        userRow.style.display = 'none';
+    }
+
+    // Error row
+    const errorRow = document.getElementById('errorRow');
+    if (data.error) {
+        document.getElementById('errorDisplay').textContent = data.error;
+        errorRow.style.display = 'flex';
+    } else {
+        errorRow.style.display = 'none';
+    }
+
+    document.getElementById('result').style.display = 'flex';
+});
+</script>
+</body>
+</html>
