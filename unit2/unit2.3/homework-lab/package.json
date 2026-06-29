@@ -1,0 +1,21 @@
+{
+  "name": "cyse411-unit2-3-xss-client-side-threats",
+  "version": "1.0.0",
+  "description": "CYSE 411 Unit 2.3 lab: XSS and client-side threats (CSP + HttpOnly + output encoding).",
+  "main": "challenge/server.js",
+  "scripts": {
+    "start:vuln": "node challenge/server.js",
+    "start:solution": "node solutions/server.js",
+    "test": "jest --runInBand"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^6.3.4"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  }
+}
