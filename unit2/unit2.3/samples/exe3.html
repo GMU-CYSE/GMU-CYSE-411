@@ -23,7 +23,7 @@
                 // VULNERABLE: stored user input injected directly into innerHTML
                 html += "<p>" + msg + "</p>";
             });
-            document.getElementById("chat").innerHTML = html;
+            document.getElementById("chat").textContent = html;
         }
 
         function sendMessage() {
