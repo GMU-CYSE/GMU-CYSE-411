@@ -1,3 +1,15 @@
-if (req.session.userId !== req.params.id) {
+
+
+app.get("/account/:id", (req, res) => {
+    if (req.session.userId !== req.params.id) {
     return res.status(403).send("Forbidden");
+    }
+
+    else {
+    
+    db.get("SELECT * FROM accounts WHERE id = ?", [req.params.id], (err, data) => {
+        res.json(data);
+    });
 }
+
+});
