@@ -11,4 +11,4 @@ function checkAccess_var(isAdmin) {
   return "ACCESS DENIED";
 }
 
-console.log(checkAccess_const(true))
+console.log(checkAccess_var(true))

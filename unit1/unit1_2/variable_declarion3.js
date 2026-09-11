@@ -12,8 +12,5 @@ function checkAccess_let(isAdmin) {
 }
 
 
-
-
-
-console.log(checkAccess_const(true))
+console.log(checkAccess_let(true))
 
