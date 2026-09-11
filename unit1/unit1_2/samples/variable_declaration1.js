@@ -1,9 +1,9 @@
-
-function checkAccess_let(isAdmin) {
+function checkAccess_var(isAdmin) {
   if (isAdmin) {
-    let role = "admin";
+    var role = "admin";
   }
 
+  // role exists even if isAdmin === false
   if (role === "admin") {
     return "ACCESS GRANTED";
   }
@@ -11,9 +11,4 @@ function checkAccess_let(isAdmin) {
   return "ACCESS DENIED";
 }
 
-
-
-
-
 console.log(checkAccess_const(true))
-

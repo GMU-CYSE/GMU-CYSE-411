@@ -1,7 +1,8 @@
-
-function checkAccess_let(isAdmin) {
+function checkAccess_const(isAdmin) {
+  const role = "noadmin";
+  
   if (isAdmin) {
-    let role = "admin";
+    role = "admin";
   }
 
   if (role === "admin") {
@@ -10,10 +11,4 @@ function checkAccess_let(isAdmin) {
 
   return "ACCESS DENIED";
 }
-
-
-
-
-
 console.log(checkAccess_const(true))
-
